@@ -1,4 +1,7 @@
-import React, { useState, useEffect} from "react";
+import React, {
+  useState,
+  // useEffect
+} from "react";
 import {
   StyleSheet,
   Text,
@@ -9,18 +12,18 @@ import {
   Image,
   Keyboard,
   TouchableWithoutFeedback,
-  Dimensions,
+  // Dimensions,
 } from "react-native";
 
-import * as Font from "expo-font";
-import { AppLoading } from "expo";
+// import * as Font from "expo-font";
+// import { AppLoading } from "expo";
 
-const loadApplication = async () => {
-  await Font.loadAsync({
-    "RobotoRegular": require("../assets/font/Roboto-Regular.ttf"),
-    "RobotoBold": require("../assets/font/Roboto-Bold.ttf"),
-  });
-};
+// const loadApplication = async () => {
+//   await Font.loadAsync({
+//     "RobotoRegular": require("../assets/font/Roboto-Regular.ttf"),
+//     "RobotoBold": require("../assets/font/Roboto-Bold.ttf"),
+//   });
+// };
 
 const initialState = {
   login: "",
@@ -32,23 +35,23 @@ export default function RegistrationScreen() {
 
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [state, setState] = useState(initialState);
-  const [iasReady, setIasReady] = useState(false);
+  // const [iasReady, setIasReady] = useState(false);
 
-  const [dimensions, setDimensions] = useState(
-    Dimensions.get("window").width - 40 * 2
-  );
+  // const [dimensions, setDimensions] = useState(
+  //   Dimensions.get("window").width - 40 * 2
+  // );
 
-  useEffect(() => {
-    const onChange = () => {
-      const width = Dimensions.get("window").width - 20 * 2;
+  // useEffect(() => {
+  //   const onChange = () => {
+  //     const width = Dimensions.get("window").width - 20 * 2;
 
-      setDimensions(width);
-    };
-    Dimensions.addEventListener("change", onChange);
-    return () => {
-      Dimensions.removeEventListener("change", onChange);
-    };
-  }, []);
+  //     setDimensions(width);
+  //   };
+  //   Dimensions.addEventListener("change", onChange);
+  //   return () => {
+  //     Dimensions.removeEventListener("change", onChange);
+  //   };
+  // }, []);
 
  
   const keyboardHide = () => {
@@ -88,7 +91,10 @@ export default function RegistrationScreen() {
           
             <Text style={styles.title}>Registration</Text>
             
-            <View style={{ ...styles.form, marginBottom: isShowKeyboard ? 20 : 100,   width: dimensions, }}>
+            <View style={{
+              ...styles.form, marginBottom: isShowKeyboard ? 20 : 100,
+              // width: dimensions,
+            }}>
               <View>                
                 <TextInput
                   style={styles.input}                  
