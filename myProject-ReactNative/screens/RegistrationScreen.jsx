@@ -1,4 +1,4 @@
-import React, { useState} from "react";
+import React, { useState, useEffect} from "react";
 import {
   StyleSheet,
   Text,
@@ -9,7 +9,7 @@ import {
   Image,
   Keyboard,
   TouchableWithoutFeedback,
- 
+  Dimensions,
 } from "react-native";
 
 import * as Font from "expo-font";
@@ -34,31 +34,22 @@ export default function RegistrationScreen() {
   const [state, setState] = useState(initialState);
   const [iasReady, setIasReady] = useState(false);
 
-  // const [dimensions, setDimensions] = useState({
-  //   width: Dimensions.get("window").width - 5 * 2,
-  // });
+  const [dimensions, setDimensions] = useState(
+    Dimensions.get("window").width - 40 * 2
+  );
 
+  useEffect(() => {
+    const onChange = () => {
+      const width = Dimensions.get("window").width - 20 * 2;
 
-  // useEffect(() => {
-  //   const onChange = () => {
-  //     const width = Dimensions.get("window").width - 5 * 2;
-  //     setDimensions(width);
-  //   };
-  //    Dimensions.addEventListener("change", onChange);
-  //   return () => {
-  //     Dimensions.removeEventListener("change", onChange);
-  //   };
-  // }, []);
+      setDimensions(width);
+    };
+    Dimensions.addEventListener("change", onChange);
+    return () => {
+      Dimensions.removeEventListener("change", onChange);
+    };
+  }, []);
 
-  if (!iasReady) {
-    return (
-      <AppLoading
-        startAsync={loadApplication}
-        onFinish={() => setIasReady(true)}
-        onError={console.warn}
-      />
-    );
-  }
  
   const keyboardHide = () => {
     setIsShowKeyboard(false);
@@ -66,10 +57,20 @@ export default function RegistrationScreen() {
     setState(initialState);
     console.log(state);
   };
- 
+
+  //  if (!iasReady) {
+  //   return (
+  //     <AppLoading
+  //       startAsync={loadApplication}
+  //       onFinish={() => setIasReady(true)}
+  //       onError={console.warn}
+  //     />
+  //   );
+  // }
+
   return (
      <TouchableWithoutFeedback onPress={keyboardHide}>
-    <View style={styles.container}>
+     <View style={styles.container}>
      
       <ImageBackground
         style={styles.image}
@@ -87,7 +88,7 @@ export default function RegistrationScreen() {
           
             <Text style={styles.title}>Registration</Text>
             
-            <View style={{ ...styles.form, marginBottom: isShowKeyboard ? 20 : 100,   }}>
+            <View style={{ ...styles.form, marginBottom: isShowKeyboard ? 20 : 100,   width: dimensions, }}>
               <View>                
                 <TextInput
                   style={styles.input}                  
@@ -170,7 +171,7 @@ const styles = StyleSheet.create({
     color: "#212121",
     marginTop: 82,
     marginBottom: 23,
-    fontFamily: "RobotoBold",
+    // fontFamily: "RobotoBold",
   },
    form: {
     marginHorizontal: 16,
@@ -183,7 +184,7 @@ const styles = StyleSheet.create({
     height: 50,
     width: 300,
     paddingLeft: 16,
-    fontFamily: "RobotoRegular",
+    // fontFamily: "RobotoRegular",
   },
   btn: {
     alignItems: 'center',
@@ -195,7 +196,7 @@ const styles = StyleSheet.create({
   },
   btnTitle: {
     color: "#FFFFFF",
-    fontFamily: "RobotoRegular",
+    // fontFamily: "RobotoRegular",
   },
   subText: {
     color: "#1B4371",
@@ -203,7 +204,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 16,
     lineHeight: 19,
-    fontFamily: "RobotoRegular",
+    // fontFamily: "RobotoRegular",
   },
   passwordText: {
     position: "absolute",
@@ -211,7 +212,7 @@ const styles = StyleSheet.create({
     right: 20,
     fontSize: 16,
     color: "#1B4371",
-    fontFamily: "RobotoRegular",
+    // fontFamily: "RobotoRegular",
   },
   addBtn: {
     top: 80,
