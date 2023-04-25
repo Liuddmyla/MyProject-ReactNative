@@ -1,5 +1,6 @@
 import React, {
   useState,
+  useCallback,
   // useEffect
 } from "react";
 import {
@@ -15,8 +16,9 @@ import {
   // Dimensions,
 } from "react-native";
 
-// import * as Font from "expo-font";
-// import { AppLoading } from "expo";
+import { useFonts } from "expo-font";
+import * as SplashScreen from "expo-splash-screen";
+SplashScreen.preventAutoHideAsync();
 
 // const loadApplication = async () => {
 //   await Font.loadAsync({
@@ -35,7 +37,23 @@ export default function RegistrationScreen() {
 
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [state, setState] = useState(initialState);
-  // const [iasReady, setIasReady] = useState(false);
+ const [isLoginOnFocused, setIsLoginOnFocused] = useState(false);
+  const [isEmailOnFocused, setIsEmailOnFocused] = useState(false);
+  const [isPasswordOnFocused, setIsPasswordOnFocused] = useState(false);
+
+  const [fontsLoaded] = useFonts({
+    "RobotoRegular": require("../../myProject-ReactNative/assets/font/Roboto-Regular.ttf"),
+    "RobotoBold": require("../../myProject-ReactNative/assets/font/Roboto-Bold.ttf"),
+  });
+  const onLayoutRootView = useCallback(async () => {
+    if (fontsLoaded) {
+      await SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded]);
+
+ if (!fontsLoaded) {
+   return null;
+ }
 
   // const [dimensions, setDimensions] = useState(
   //   Dimensions.get("window").width - 40 * 2
@@ -61,19 +79,10 @@ export default function RegistrationScreen() {
     console.log(state);
   };
 
-  //  if (!iasReady) {
-  //   return (
-  //     <AppLoading
-  //       startAsync={loadApplication}
-  //       onFinish={() => setIasReady(true)}
-  //       onError={console.warn}
-  //     />
-  //   );
-  // }
-
+ 
   return (
      <TouchableWithoutFeedback onPress={keyboardHide}>
-     <View style={styles.container}>
+     <View style={styles.container} onLayout={onLayoutRootView}>
      
       <ImageBackground
         style={styles.image}
@@ -97,31 +106,52 @@ export default function RegistrationScreen() {
             }}>
               <View>                
                 <TextInput
-                  style={styles.input}                  
+                  style={{
+                    ...styles.input,
+                    backgroundColor: isLoginOnFocused ? "#fff" : "#F6F6F6",
+                    borderColor: isLoginOnFocused ? "#FF6C00" : "#E8E8E8",
+                  }}                  
                   placeholder="Login"
                   placeholderTextColor="#BDBDBD"
-                  onFocus={() => setIsShowKeyboard(true)}
+                  onFocus={() => {
+                    setIsShowKeyboard(true);
+                    setIsLoginOnFocused(true);
+                  }}
                   value={state.login}
                   onChangeText={(value) => setState((prevState) => ({...prevState, login: value, }))}
                 />                
               </View>
               <View style={{ marginTop: 16 }}>
                 <TextInput
-                  style={styles.input}                  
+                  style={{
+                    ...styles.input,
+                    backgroundColor: isEmailOnFocused ? "#fff" : "#F6F6F6",
+                    borderColor: isEmailOnFocused ? "#FF6C00" : "#E8E8E8",
+                  }}                 
                   placeholder="Email"
                   placeholderTextColor="#BDBDBD"
-                  onFocus={() => setIsShowKeyboard(true)}
+                   onFocus={() => {
+                    setIsShowKeyboard(true);
+                    setIsEmailOnFocused(true);
+                  }}
                   value={state.email}
                   onChangeText={(value) => setState((prevState) => ({...prevState, email: value, }))}
                 />
               </View>
               <View style={{ marginTop: 16 }}>
                 <TextInput
-                  style={styles.input}                  
+                  style={{
+                    ...styles.input,
+                    backgroundColor: isPasswordOnFocused ? "#fff" : "#F6F6F6",
+                    borderColor: isPasswordOnFocused ? "#FF6C00" : "#E8E8E8",
+                  }}                  
                   secureTextEntry={true}
                   placeholder="Password"
                   placeholderTextColor="#BDBDBD"
-                  onFocus={() => setIsShowKeyboard(true)}
+                  onFocus={() => {
+                    setIsShowKeyboard(true);
+                    setIsPasswordOnFocused(true);
+                  }}
                   value={state.password}
                   onChangeText={(value) => setState((prevState) => ({...prevState, password: value, }))}
                 />
@@ -177,7 +207,7 @@ const styles = StyleSheet.create({
     color: "#212121",
     marginTop: 82,
     marginBottom: 23,
-    // fontFamily: "RobotoBold",
+    fontFamily: "RobotoBold",
   },
    form: {
     marginHorizontal: 16,
@@ -190,7 +220,7 @@ const styles = StyleSheet.create({
     height: 50,
     width: 300,
     paddingLeft: 16,
-    // fontFamily: "RobotoRegular",
+    fontFamily: "RobotoRegular",
   },
   btn: {
     alignItems: 'center',
@@ -202,7 +232,7 @@ const styles = StyleSheet.create({
   },
   btnTitle: {
     color: "#FFFFFF",
-    // fontFamily: "RobotoRegular",
+    fontFamily: "RobotoRegular",
   },
   subText: {
     color: "#1B4371",
@@ -210,7 +240,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 16,
     lineHeight: 19,
-    // fontFamily: "RobotoRegular",
+    fontFamily: "RobotoRegular",
   },
   passwordText: {
     position: "absolute",
@@ -218,7 +248,7 @@ const styles = StyleSheet.create({
     right: 20,
     fontSize: 16,
     color: "#1B4371",
-    // fontFamily: "RobotoRegular",
+    fontFamily: "RobotoRegular",
   },
   addBtn: {
     top: 80,
